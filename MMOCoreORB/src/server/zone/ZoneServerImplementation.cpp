@@ -396,9 +396,9 @@ void ZoneServerImplementation::clearZones() {
 		ManagedReference<Zone*> zone = zones->get(i);
 
 		if (zone != NULL) {
-			EXECUTE_TASK_1(zone, {
-					zone_p->clearZone();
-			});
+			Core::getTaskManager()->executeTask([=] () {
+				zone->clearZone();
+			}, "ClearZoneLambda");
 		}
 	}
 
@@ -464,7 +464,7 @@ void ZoneServerImplementation::handleMessage(ZoneClientSession* client, Packet* 
 void ZoneServerImplementation::processMessage(Message* message) {
 	ZonePacketHandler* zonePacketHandler = processor->getPacketHandler();
 
-	ZoneClientSession* client = zoneHandler->getClientSession(message->getClient());
+	auto client = zoneHandler->getClientSession(message->getClient());
 
 	Task* task = zonePacketHandler->generateMessageTask(client, message);
 
@@ -623,8 +623,11 @@ int ZoneServerImplementation::getConnectionCount() {
 void ZoneServerImplementation::printInfo() {
 	lock();
 
+	TaskManager* taskMgr = Core::getTaskManager();
 	StringBuffer msg;
-	msg << Core::getTaskManager()->getInfo(false) << endl;
+
+	if (taskMgr != NULL)
+		msg << taskMgr->getInfo(false) << endl;
 	//msg << "MessageQueue - size = " << processor->getMessageQueue()->size() << endl;
 
 	float packetloss;
