@@ -16,3 +16,5 @@ gdb core3
 Run Unit Integrity Test
 /home/vagrant/bin/swgemu runUnitTests
 
+
+Reabse Update to lates core 3 
