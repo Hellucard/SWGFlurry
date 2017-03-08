@@ -7,7 +7,7 @@ GoToDathomir = GoToLocation:new {
 	taskName = "GoToDathomir",
 	-- GoToLocation properties
 	waypointDescription = "@quest/force_sensitive/intro:goto_dath_sum",
-	spawnPoint = { x = 5239, y = -4058 },
+	spawnPoint = { x = 5306, y = -4145 },
 	spawnPlanet = "dathomir",
 	spawnRadius = 128,
 	onFailedSpawn = nil,
@@ -42,6 +42,7 @@ function GoToDathomir:onSuccessfulSpawn(pPlayer)
 	end
 
 	QuestManager.activateQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER)
+	VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS)
 	CreatureObject(pPlayer):sendSystemMessage("@quest/force_sensitive/intro:force_sensitive")
 
 	if (not PlayerObject(pGhost):isJedi()) then
